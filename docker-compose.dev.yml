@@ -1,0 +1,25 @@
+version: '3'
+
+services:
+  api:
+    container_name: api
+    build:
+        context: ./itdda-api
+    ports:
+      - "${API_SERVER_PORT}:${API_SERVER_PORT}"
+    depends_on:
+      - db
+
+  db:
+    container_name: db
+    image: mariadb:latest
+    ports:
+      - "${MARIADB_PORT}:${MARIADB_PORT}"
+    environment:
+      MARIADB_DATABASE: "${MARIADB_DB}"
+      MARIADB_USER: "${MARIADB_USER}"
+      MARIADB_PASSWORD: "${MARIADB_PASSWORD}"
+      MARIADB_ROOT_PASSWORD: "${MARIADB_ROOT_PASSWORD}"
+    volumes:
+      - "./mariadb/conf.d:/etc/mysql/conf.d"
+      - "./mariadb/data:/var/lib/mysql"
